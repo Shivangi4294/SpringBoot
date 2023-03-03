@@ -1,4 +1,4 @@
-package com.wissen.participant.participantController;
+package com.wissen.controller;
 
 @RestController
 public class participantController {

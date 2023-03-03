@@ -1,4 +1,4 @@
-package com.wissen.participant.participantEntity;
+package com.wissen.entity;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package com.wissen.participant.participantRepository;
+package com.wissen.repository;
 
 import java.util.*;
 
