@@ -1,9 +1,12 @@
 package com.wissen.controller;
 
 import com.wissen.entity.Participant;
-import com.wissen.repository.ParticipantRepository;
+import com.wissen.exception.IdNotFoundException;
+import com.wissen.exception.MandatoryFieldException;
+import com.wissen.service.ParticipantService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
@@ -11,34 +14,36 @@ import java.util.*;
 public class ParticipantController {
 
     @Autowired
-    ParticipantRepository repository;
+    private ParticipantService participantService;
 
-    @PostMapping(path = "/insertParticipant")
-    public ResponseEntity<String> insertParticipants(){
+    @PostMapping(path = "/api/insertParticipant")
+    public ResponseEntity<Participant> insertParticipant(@RequestBody Participant participant) throws MandatoryFieldException {
 
-        Participant p1 = new Participant(1,"Hari","wissen","tech","dev");
-        repository.save(p1);
+        return participantService.insertParticipant(participant);
 
-        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    @PostMapping(path = "api/bulkParticipants")
-//    public ResponseEntity<String> insertParticipants(@RequestBody List<Participant> participants){
-    public void insertParticipants(@RequestBody List<Participant> participants){
+    @PostMapping(path = "/api/bulkParticipants")
+    public List<Participant> insertBulkParticipants(@RequestBody List<Participant> participants){
 
-        repository.saveAll(participants);
-
-//        return ResponseEntity.status(HttpStatus.CREATED).build();
+        return participantService.insertBulkParticipants(participants);
     }
 
-//    @GetMapping(path ="api/getAllParticipants")     //@RequestMapping(method = RequestMethod.GET)
-//    public List<Participant> getAllParticipants(){
-//        List<Participant> participantsList = repository.getAllParticipants;
-//        return participantsList;
-//    }
-//    @GetMapping(path ="api/getParticipantById")     //@RequestMapping(method = RequestMethod.GET)
-//    public List<Participant> getAllParticipants(){
-//        List<Participant> participantsList = repository.getAllParticipants;
-//        return participantsList;
-//    }
+    @GetMapping(path ="/api/getAllParticipants")     //@RequestMapping(method = RequestMethod.GET)
+    public List<Participant> getAllParticipants(){
+        return participantService.getAllParticipants();
+    }
 
+    @GetMapping(path ="/api/getParticipantById/{id}")     //@RequestMapping(method = RequestMethod.GET)
+    public Participant getParticipantById(@PathVariable int id) {
+        Participant participant = participantService.getParticipantById(id);
+        return participant;
+    }
+
+    @ExceptionHandler(IdNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<String> handleIdNotFoundException(IdNotFoundException exception){
+        return ResponseEntity.
+                status(HttpStatus.NOT_FOUND).
+                body(exception.getMessage());
+    }
 }

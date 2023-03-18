@@ -1,16 +1,23 @@
 package com.wissen.entity;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity()
 public class Participant{
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     int id;
+    @Getter@Setter
     @Column(name = "participantName")
     String participantName;
+    @Getter@Setter
     @Column(name = "organisation")
     String organisation;
+    @Getter@Setter
     @Column(name = "department")
     String department;
+    @Getter@Setter
     @Column(name = "designation")
     String designation;
 
@@ -21,44 +28,4 @@ public class Participant{
         this.organisation = organisation;
         this.department = department;
         this.designation = designation;
-    }
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getParticipantName() {
-        return participantName;
-    }
-
-    public void setParticipantName(String participantName) {
-        this.participantName = participantName;
-    }
-
-    public String getOrganisation() {
-        return organisation;
-    }
-
-    public void setOrganisation(String organisation) {
-        this.organisation = organisation;
-    }
-
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
-
-    public String getDesignation() {
-        return designation;
-    }
-
-    public void setDesignation(String designation) {
-        this.designation = designation;
-    }
-}
+    }}
