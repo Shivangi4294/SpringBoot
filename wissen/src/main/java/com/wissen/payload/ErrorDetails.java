@@ -1,8 +1,9 @@
 package com.wissen.payload;
+
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.*;
+import java.util.Date;
 public class ErrorDetails {
     @Getter
     @Setter

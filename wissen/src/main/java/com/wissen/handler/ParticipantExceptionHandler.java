@@ -9,7 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import java.util.*;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Date;
 
 @RestControllerAdvice
 public class ParticipantExceptionHandler{
@@ -30,5 +33,15 @@ public class ParticipantExceptionHandler{
         return  new ResponseEntity<>(errorDetails, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(FileNotFoundException.class)
+    public ResponseEntity<ErrorDetails> handleFileNotFoundException(FileNotFoundException exception, WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails(new Date(),"File not found.",webRequest.getDescription(false));
+        return  new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
 
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<ErrorDetails> handleIOException(IOException exception, WebRequest webRequest){
+        ErrorDetails errorDetails = new ErrorDetails(new Date(),"IO Exception",webRequest.getDescription(false));
+        return  new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
+    }
 }
