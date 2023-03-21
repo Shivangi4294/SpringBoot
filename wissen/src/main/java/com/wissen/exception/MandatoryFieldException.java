@@ -1,9 +1,13 @@
 package com.wissen.exception;
 
-public class MandatoryFieldException extends Exception {
-    private String message;
-    public MandatoryFieldException(String message){
-        super(message);
-        this.message =message;
-    }
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+
+@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+public class MandatoryFieldException extends RuntimeException {
+//    private String message;
+//    public MandatoryFieldException(String message){
+//        super(message);
+//        this.message =message;
+//    }
 }

@@ -28,22 +28,16 @@ public class ParticipantController {
         return participantService.insertBulkParticipants(participants);
     }
 
-    @GetMapping(path ="/api/getAllParticipants")     //@RequestMapping(method = RequestMethod.GET)
+    @GetMapping(path ="/api/getAllParticipants")
     public List<Participant> getAllParticipants(){
         return participantService.getAllParticipants();
     }
 
-    @GetMapping(path ="/api/getParticipantById/{id}")     //@RequestMapping(method = RequestMethod.GET)
+    @GetMapping(path ="/api/getParticipantById/{id}")
     public Participant getParticipantById(@PathVariable int id) {
         Participant participant = participantService.getParticipantById(id);
         return participant;
     }
 
-    @ExceptionHandler(IdNotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<String> handleIdNotFoundException(IdNotFoundException exception){
-        return ResponseEntity.
-                status(HttpStatus.NOT_FOUND).
-                body(exception.getMessage());
-    }
+
 }

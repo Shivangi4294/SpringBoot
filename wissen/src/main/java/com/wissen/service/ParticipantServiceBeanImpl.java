@@ -20,18 +20,16 @@ public  class ParticipantServiceBeanImpl implements ParticipantService {
     Logger logger = LoggerFactory.getLogger(ParticipantServiceBeanImpl.class);
     @Autowired
     private ParticipantRepository repository;
-    @ExceptionHandler(value = MandatoryFieldException.class)
     public ResponseEntity<Participant> insertParticipant(Participant participant) throws MandatoryFieldException {
-
         if(participant.getParticipantName().isEmpty() || participant.getParticipantName().isBlank()) {
-            throw new MandatoryFieldException("ParticipantName is mandatory.");
+            throw new MandatoryFieldException();
         }
         return new ResponseEntity<>(repository.save(participant),HttpStatus.OK);
     }
     public List<Participant> insertBulkParticipants(List<Participant> participants){
         return repository.saveAll(participants);
     }
-    @ExceptionHandler(value = IdNotFoundException.class)
+
     public Participant getParticipantById(int id) {
         Participant participant;
         Optional<Participant> optional = repository.findById(id);
@@ -39,16 +37,15 @@ public  class ParticipantServiceBeanImpl implements ParticipantService {
             participant  = optional.get();
         }
         else{
-            throw new IdNotFoundException("Participant not found.");
+            throw new IdNotFoundException();
         }
         return participant;
     }
 
-    @ExceptionHandler(value = ParticipantNotFoundException.class)
     public List<Participant> getAllParticipants(){
         List<Participant> participantList = repository.findAll();
-        if(participantList.isEmpty()){
-            throw new ParticipantNotFoundException("No Participant to show.");
+        if(participantList.isEmpty() ){
+            throw new ParticipantNotFoundException();
         }
         return participantList;
     }

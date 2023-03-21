@@ -1,31 +1,23 @@
 package com.wissen.entity;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
-@Entity()
-public class Participant{
-    @GeneratedValue(strategy = GenerationType.AUTO)
+import lombok.*;
+import java.io.Serializable;
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Entity
+@Table(name ="participant")
+    public class Participant implements Serializable {
+    private static final long serialVersionUID=1L;
+@SequenceGenerator(name="mysequence", initialValue=1)
+@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="mysequence")
     @Id
-    int id;
-    @Getter@Setter
-    @Column(name = "participantName")
-    String participantName;
-    @Getter@Setter
-    @Column(name = "organisation")
-    String organisation;
-    @Getter@Setter
-    @Column(name = "department")
-    String department;
-    @Getter@Setter
-    @Column(name = "designation")
-    String designation;
+    private int id;
+    private String participantName;
+    private String organisation;
+    private String department;
+    private String designation;
 
-    public Participant(){}
-    public Participant(int id, String participantName, String organisation, String department, String designation) {
-        this.id = id;
-        this.participantName = participantName;
-        this.organisation = organisation;
-        this.department = department;
-        this.designation = designation;
-    }}
+
+}
