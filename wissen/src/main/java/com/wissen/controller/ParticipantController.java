@@ -2,14 +2,13 @@ package com.wissen.controller;
 
 import com.wissen.entity.Participant;
 import com.wissen.service.ParticipantService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 public class ParticipantController {
 
@@ -17,8 +16,9 @@ public class ParticipantController {
     private ParticipantService participantService;
 
     @PostMapping(path = "/api/upload-csv-file")
-    public List<Participant> uploadCSVFile() throws IOException {
-        return participantService.uploadCSVFile();
+    public List<Participant> uploadCSVFile(@RequestBody MultipartFile file) {
+
+        return participantService.uploadCSVFile(file);
     }
 
     @PostMapping(path = "/api/participants")
@@ -37,6 +37,7 @@ public class ParticipantController {
         Participant participant = participantService.getParticipantById(id);
         return participant;
     }
+
 
 
 }
