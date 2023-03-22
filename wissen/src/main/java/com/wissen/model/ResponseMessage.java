@@ -1,4 +1,4 @@
-package com.wissen.message;
+package com.wissen.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

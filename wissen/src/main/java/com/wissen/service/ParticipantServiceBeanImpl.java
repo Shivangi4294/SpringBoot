@@ -1,23 +1,21 @@
 package com.wissen.service;
 
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.wissen.entity.Participant;
 import com.wissen.exception.IdNotFoundException;
-import com.wissen.exception.MandatoryFieldException;
-import com.wissen.exception.ParticipantNotFoundException;
 import com.wissen.repository.ParticipantRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.*;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,23 +23,22 @@ import java.util.Optional;
 @Slf4j
 @AllArgsConstructor
 public class ParticipantServiceBeanImpl implements ParticipantService {
-//    Logger logger = LoggerFactory.getLogger(ParticipantServiceBeanImpl.class);
     @Autowired
     private ParticipantRepository repository;
 
 
-
     @Override
     public List<Participant> uploadCSVFile(MultipartFile file) {
-        if(file.isEmpty()){
+        if (file.isEmpty()) {
             throw new NullPointerException("No File uploaded");
         }
-        List<Participant> participantList = null;
+        List<Participant> participantList;
         try {
-            Path filePath = Paths.get(new File(file.getOriginalFilename()).getAbsolutePath());
-            CSVReader csvReader = new CSVReader(new FileReader(String.valueOf(filePath)));
+            Reader reader = new InputStreamReader(file.getInputStream());
 
-            CsvToBean<Participant> csvToBean = new CsvToBeanBuilder(csvReader)
+            CSVReader csvReader = new CSVReaderBuilder(reader).build();
+
+            CsvToBean<Participant> csvToBean = new CsvToBeanBuilder<Participant>(csvReader)
                     .withType(Participant.class)
                     .withIgnoreLeadingWhiteSpace(true)
                     .build();
@@ -54,13 +51,6 @@ public class ParticipantServiceBeanImpl implements ParticipantService {
         return participantList;
     }
 
-    public ResponseEntity<Participant> insertParticipant(Participant participant) {
-        if (participant.getParticipantName().isEmpty() || participant.getParticipantName().isBlank()) {
-            throw new MandatoryFieldException();
-        }
-        return new ResponseEntity<>(repository.save(participant), HttpStatus.OK);
-    }
-
     public List<Participant> insertBulkParticipants(List<Participant> participants) {
         return repository.saveAll(participants);
     }
@@ -71,18 +61,13 @@ public class ParticipantServiceBeanImpl implements ParticipantService {
         if (optional.isPresent()) {
             participant = optional.get();
         } else {
-            throw new IdNotFoundException();
+            throw new IdNotFoundException("Participant with id: "+id+" not found.");
         }
         return participant;
     }
 
     public List<Participant> getAllParticipants() {
-        List<Participant> participantList = repository.findAll();
-        if (participantList.isEmpty()) {
-            throw new ParticipantNotFoundException();
-        }
-        return participantList;
+        return repository.findAll();
     }
-
 
 }

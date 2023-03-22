@@ -12,37 +12,3 @@ public class ParticipantServiceApplication {
     }
 
 }
-
-//@ComponentScan(basePackageClasses = AppConfig.class)
-//class AppConfig {
-//
-//}
-//
-//@Controller
-//class UserController {
-//    private final UserService simpleUserService;
-//    UserController(UserService userService){
-//        this.simpleUserService = userService;
-//    }
-//}
-
-//
-//interface UserService {
-//
-//}
-//
-//@Data
-//@Component
-//class SimpleUserService implements UserService{
-//
-//}
-//@Data
-//@Component
-//class MyUserService implements UserService{
-//
-//}
-//@Data
-//@Component
-//class ExtraUserService implements UserService{
-//
-//}

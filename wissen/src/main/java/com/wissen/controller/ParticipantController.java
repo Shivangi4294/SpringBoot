@@ -2,42 +2,40 @@ package com.wissen.controller;
 
 import com.wissen.entity.Participant;
 import com.wissen.service.ParticipantService;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.util.List;
 
-@AllArgsConstructor
 @RestController
+@RequiredArgsConstructor
+@RequestMapping("/api/v1/participants")
 public class ParticipantController {
 
-    @Autowired
-    private ParticipantService participantService;
+    private final ParticipantService participantService;
 
-    @PostMapping(path = "/api/upload-csv-file")
-    public List<Participant> uploadCSVFile(@RequestBody MultipartFile file) {
-
+    @PostMapping(path ="/upload-csv-file")
+    public List<Participant> uploadCSVFile(@RequestParam MultipartFile file) {
         return participantService.uploadCSVFile(file);
     }
 
-    @PostMapping(path = "/api/participants")
+    @PostMapping
     public List<Participant> insertBulkParticipants(@RequestBody List<Participant> participants) {
-
         return participantService.insertBulkParticipants(participants);
     }
 
-    @GetMapping(path = "/api/participants")
-    public List<Participant> getAllParticipants() {
+    @GetMapping(path = "/{id}")
+    public List<Participant> getParticipantById(@PathVariable String id) {
+        if (id == null) {
+            return participantService.getAllParticipants();
+        }
+        return List.of(participantService.getParticipantById(Integer.parseInt(id)));
+    }
+
+    @GetMapping
+    public List<Participant> getAllParticipants(){
         return participantService.getAllParticipants();
     }
-
-    @GetMapping(path = "/api/getParticipantById/{id}")
-    public Participant getParticipantById(@PathVariable int id) {
-        Participant participant = participantService.getParticipantById(id);
-        return participant;
-    }
-
-
 
 }
