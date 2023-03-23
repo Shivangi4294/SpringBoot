@@ -6,7 +6,6 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.wissen.entity.Participant;
 import com.wissen.exception.IdNotFoundException;
-import com.wissen.repository.ParticipantPagination;
 import com.wissen.repository.ParticipantRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +28,6 @@ import java.util.Optional;
 public class ParticipantServiceBeanImpl implements ParticipantService {
     @Autowired
     private ParticipantRepository repository;
-    @Autowired
-    private ParticipantPagination paginationRepository;
-
 
     @Override
     public List<Participant> uploadCSVFile(MultipartFile file) {
@@ -78,7 +74,7 @@ public class ParticipantServiceBeanImpl implements ParticipantService {
 
     public Page<Participant> displayAllParticipants(Integer pageNo, Integer pageSize){
         Pageable pageable = PageRequest.of(pageNo,pageSize);
-        return paginationRepository.findAll(pageable);
+        return repository.findAll(pageable);
     }
 
 }
