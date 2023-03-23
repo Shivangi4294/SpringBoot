@@ -3,6 +3,7 @@ package com.wissen.controller;
 import com.wissen.entity.Participant;
 import com.wissen.service.ParticipantService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -31,10 +32,15 @@ public class ParticipantController {
         }
         return List.of(participantService.getParticipantById(Integer.parseInt(id)));
     }
-
     @GetMapping
     public List<Participant> getAllParticipants(){
+
         return participantService.getAllParticipants();
     }
+    @GetMapping(path = "/displayParticipants")
+    public Page<Participant> displayAllParticipants(@RequestParam Integer pageNo, Integer pageSize){
+        return participantService.displayAllParticipants(pageNo,pageSize);
+    }
+
 
 }

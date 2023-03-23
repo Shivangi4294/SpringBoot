@@ -6,10 +6,14 @@ import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.wissen.entity.Participant;
 import com.wissen.exception.IdNotFoundException;
+import com.wissen.repository.ParticipantPagination;
 import com.wissen.repository.ParticipantRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +29,8 @@ import java.util.Optional;
 public class ParticipantServiceBeanImpl implements ParticipantService {
     @Autowired
     private ParticipantRepository repository;
+    @Autowired
+    private ParticipantPagination paginationRepository;
 
 
     @Override
@@ -68,6 +74,11 @@ public class ParticipantServiceBeanImpl implements ParticipantService {
 
     public List<Participant> getAllParticipants() {
         return repository.findAll();
+    }
+
+    public Page<Participant> displayAllParticipants(Integer pageNo, Integer pageSize){
+        Pageable pageable = PageRequest.of(pageNo,pageSize);
+        return paginationRepository.findAll(pageable);
     }
 
 }
